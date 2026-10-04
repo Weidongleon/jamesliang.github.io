@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script>
+  try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
 <title>Weidong (James) Liang</title>
 <meta name="description" content="Weidong (James) Liang, PhD — biomedical engineer and founder in London, working on trustworthy dental AI and ultrasound-guided needle tracking.">
 <meta property="og:title" content="Weidong (James) Liang">
@@ -23,17 +27,36 @@
     --sage: #3d6b5a;
     --sage-soft: #e6ebe3;
     --clay: #a8845a;
+    --pulse-k: 1;
+    --shot-filter: none;
+    --photo-filter: saturate(.85);
+    --shadow-c: rgba(40,50,40,.25);
+    --bezel: #232b27;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #141715; --paper: #1a1e1b; --ink: #e6e4dd; --muted: #8f958f; --faint: #4d534e;
       --line: #2a302c; --sage: #8fbca7; --sage-soft: #1f2b25; --clay: #cfa878;
+      --pulse-k: 1.6; --shot-filter: brightness(.86) contrast(1.04); --photo-filter: saturate(.8) brightness(.92); --shadow-c: rgba(0,0,0,.55); --bezel: #39413c;
     }
   }
   :root[data-theme="dark"] {
     --bg: #141715; --paper: #1a1e1b; --ink: #e6e4dd; --muted: #8f958f; --faint: #4d534e;
     --line: #2a302c; --sage: #8fbca7; --sage-soft: #1f2b25; --clay: #cfa878;
+    --pulse-k: 1.6; --shot-filter: brightness(.86) contrast(1.04); --photo-filter: saturate(.8) brightness(.92); --shadow-c: rgba(0,0,0,.55); --bezel: #39413c;
   }
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  body, header.nav, .scan, .spiral-fig, .card, .gate { transition: background-color .5s ease, color .5s ease, border-color .5s ease; }
+  .shots img, .portrait img { filter: var(--shot-filter); transition: filter .5s ease; }
+  .portrait img { filter: var(--photo-filter); }
+
+  /* Theme switch */
+  .theme-btn { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: none; color: var(--muted); cursor: pointer; display: grid; place-items: center; transition: color .3s, border-color .3s; }
+  .theme-btn:hover { color: var(--ink); border-color: var(--faint); }
+  .theme-btn svg { width: 16px; height: 16px; }
+  .theme-btn [data-icon] { display: none; }
+  .theme-btn[data-mode="auto"] [data-icon="auto"], .theme-btn[data-mode="light"] [data-icon="light"], .theme-btn[data-mode="dark"] [data-icon="dark"] { display: block; }
 
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; scroll-padding-top: 64px; }
@@ -74,7 +97,7 @@
   .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border: 1px solid var(--ink); border-radius: 999px; font: inherit; color: var(--ink); background: none; cursor: pointer; transition: background .3s, color .3s; }
   .btn:hover { background: var(--ink); color: var(--bg); }
   .portrait { position: relative; }
-  .portrait img { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: center 22%; border-radius: 50%; filter: saturate(.85); }
+  .portrait img { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: center 22%; border-radius: 50%; }
   .enso { position: absolute; inset: -18px; width: calc(100% + 36px); height: calc(100% + 36px); pointer-events: none; }
   .enso circle { fill: none; stroke: var(--sage); stroke-width: 1.4; stroke-linecap: round; stroke-dasharray: 640; stroke-dashoffset: 640; transform: rotate(-70deg); transform-origin: center; animation: draw 3.2s cubic-bezier(.6,.05,.3,1) .4s forwards; opacity: .7; }
   @keyframes draw { to { stroke-dashoffset: 70; } }
@@ -102,8 +125,8 @@
   .product h3 .zh { font-size: .8em; color: var(--muted); margin-left: 10px; letter-spacing: .1em; }
   .product p { margin: 0; color: var(--muted); }
   .shots { position: relative; padding-bottom: 40px; }
-  .shots .desk { width: 86%; border-radius: 10px; border: 1px solid var(--line); box-shadow: 0 30px 60px -30px rgba(40,50,40,.25); display: block; }
-  .shots .phone { position: absolute; right: 0; bottom: 0; width: 22%; border-radius: 22px; border: 6px solid var(--ink); box-shadow: 0 30px 50px -20px rgba(40,50,40,.35); }
+  .shots .desk { width: 86%; border-radius: 10px; border: 1px solid var(--line); box-shadow: 0 30px 60px -30px var(--shadow-c); display: block; }
+  .shots .phone { position: absolute; right: 0; bottom: 0; width: 22%; border-radius: 22px; border: 6px solid var(--bezel); box-shadow: 0 30px 50px -20px var(--shadow-c); }
   .shots.single .desk { width: 100%; }
   .shot-placeholder { aspect-ratio: 16/9; border: 1px dashed var(--faint); border-radius: 10px; display: grid; place-items: center; color: var(--muted); font-size: 13px; background: var(--paper); }
   .small-projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; border-top: 1px solid var(--line); padding-top: 40px; }
@@ -204,6 +227,11 @@
       <a href="#path">Path</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="theme-btn" id="theme-btn" type="button" data-mode="auto" aria-label="Theme: follow system. Click to switch.">
+      <svg data-icon="auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+      <svg data-icon="light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+      <svg data-icon="dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+    </button>
   </div>
 </header>
 
@@ -426,6 +454,24 @@
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Theme: auto (system) -> light -> dark
+  var root = document.documentElement, tbtn = document.getElementById('theme-btn');
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  function getMode() { return root.getAttribute('data-theme') || 'auto'; }
+  function applyMode(m) {
+    if (m === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', m);
+    try { if (m === 'auto') localStorage.removeItem('theme'); else localStorage.setItem('theme', m); } catch (e) {}
+    tbtn.setAttribute('data-mode', m);
+    var names = { auto: 'follow system', light: 'light', dark: 'dark' };
+    tbtn.setAttribute('aria-label', 'Theme: ' + names[m] + '. Click to switch.');
+    tbtn.title = 'Theme: ' + names[m];
+    document.dispatchEvent(new Event('themechange'));
+  }
+  tbtn.setAttribute('data-mode', getMode());
+  tbtn.title = 'Theme: ' + (getMode() === 'auto' ? 'follow system' : getMode());
+  tbtn.addEventListener('click', function () { var m = getMode(); applyMode(m === 'auto' ? 'light' : m === 'light' ? 'dark' : 'auto'); });
+  (mq.addEventListener ? mq.addEventListener('change', function () { document.dispatchEvent(new Event('themechange')); }) : mq.addListener(function () { document.dispatchEvent(new Event('themechange')); }));
+
   document.getElementById('yr').textContent = new Date().getFullYear();
   try {
     var d = new Date(document.lastModified);
@@ -453,11 +499,19 @@
   /* ---------- Research animation: needle tip beacon tracked by a probe array ---------- */
   var NS = 'http://www.w3.org/2000/svg';
   var svg = document.getElementById('scan');
+  function paint(n, k, v) {
+    if (k === 'fill' || k === 'stroke') n.style.setProperty(k, v); else n.setAttribute(k, v);
+  }
   function el(name, attrs, parent) {
     var n = document.createElementNS(NS, name);
-    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    for (var k in attrs) paint(n, k, attrs[k]);
     (parent || svg).appendChild(n); return n;
   }
+  // Theme-tuned animation strength (stronger pulses on dark backgrounds)
+  var PK = 1;
+  function readTheme() { PK = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pulse-k')) || 1; }
+  readTheme();
+  document.addEventListener('themechange', readTheme);
   var W = 600, H = 380, top = 56, mmPerPx = 0.12;
   // tissue texture
   for (var i = 0; i < 9; i++) el('line', { x1: 0, x2: W, y1: top + 30 + i * 36, y2: top + 30 + i * 36, stroke: 'var(--line)', 'stroke-width': 1 });
@@ -506,15 +560,15 @@
       var r = (now - q.t0) * 0.22;
       if (r > 520) { q.node.remove(); return false; }
       q.node.setAttribute('r', r);
-      q.node.setAttribute('opacity', Math.max(0, 0.75 - r / 600));
+      q.node.setAttribute('opacity', Math.min(1, Math.max(0, 0.75 - r / 600) * PK));
       elems.forEach(function (e, k) {
         if (!q.hit[k] && Math.hypot(e.x - q.x, e.y - q.y) <= r) {
-          q.hit[k] = 1; e.node.setAttribute('fill', 'var(--sage)'); e.lit = now;
+          q.hit[k] = 1; paint(e.node, 'fill', 'var(--sage)'); e.lit = now;
         }
       });
       return true;
     });
-    elems.forEach(function (e) { if (e.lit && now - e.lit > 260) { e.node.setAttribute('fill', 'var(--faint)'); e.lit = 0; } });
+    elems.forEach(function (e) { if (e.lit && now - e.lit > 260) { paint(e.node, 'fill', 'var(--faint)'); e.lit = 0; } });
 
     // triangulation rays to three elements
     while (rays.firstChild) rays.firstChild.remove();
@@ -537,7 +591,7 @@
   (function () {
     var sv = document.getElementById('spiral'); if (!sv) return;
     var N = 256, cx = 220, cy = 214, R = 150, GA = Math.PI * (3 - Math.sqrt(5));
-    function mk(n, a, parent) { var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); (parent || sv).appendChild(e); return e; }
+    function mk(n, a, parent) { var e = document.createElementNS(NS, n); for (var k in a) paint(e, k, a[k]); (parent || sv).appendChild(e); return e; }
     mk('rect', { x: cx - R - 22, y: cy - R - 22, width: 2 * R + 44, height: 2 * R + 44, rx: 26, fill: 'none', stroke: 'var(--line)', 'stroke-width': 1.2 });
     mk('line', { x1: cx - R - 22, x2: cx + R + 22, y1: cy, y2: cy, stroke: 'var(--line)', 'stroke-width': 1 });
     mk('line', { x1: cx, x2: cx, y1: cy - R - 22, y2: cy + R + 22, stroke: 'var(--line)', 'stroke-width': 1 });
@@ -571,13 +625,13 @@
         var lvl = front >= arrive ? Math.max(0, 1 - (front - arrive) / 70) : 0;
         if (Math.abs(lvl - e.lvl) > 0.02) {
           e.lvl = lvl;
-          e.node.setAttribute('fill', lvl > 0.05 ? 'var(--sage)' : 'var(--faint)');
+          paint(e.node, 'fill', lvl > 0.05 ? 'var(--sage)' : 'var(--faint)');
           e.node.setAttribute('r', (3.2 + lvl * 1.8).toFixed(2));
           e.node.setAttribute('opacity', lvl > 0.05 ? (0.45 + 0.55 * lvl).toFixed(2) : 1);
         }
       });
       ring.setAttribute('cx', src.x); ring.setAttribute('cy', src.y); ring.setAttribute('r', Math.max(0, front));
-      ring.setAttribute('opacity', Math.max(0, 0.5 - front / 500).toFixed(2));
+      ring.setAttribute('opacity', Math.min(1, Math.max(0, 0.5 - front / 500) * PK).toFixed(2));
       var settled = front > 260;
       mark.setAttribute('transform', 'translate(' + src.x.toFixed(1) + ',' + src.y.toFixed(1) + ')');
       mark.setAttribute('opacity', settled ? 1 : 0.25);
