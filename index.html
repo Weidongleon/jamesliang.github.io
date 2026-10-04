@@ -123,15 +123,17 @@
   .pubs li { display: grid; grid-template-columns: 1fr auto; gap: 24px; padding: 18px 0; border-top: 1px solid var(--line); font-size: 15px; }
   .pubs li span:last-child { color: var(--muted); font-size: 13px; white-space: nowrap; }
 
-  .gallery { display: grid; grid-template-columns: 1.5fr 1fr; grid-auto-rows: 220px; gap: 16px; margin-top: 56px; }
-  .gallery figure { margin: 0; overflow: hidden; border-radius: 12px; border: 1px solid var(--line); background: var(--paper); position: relative; }
-  .gallery img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.6s cubic-bezier(.2,.6,.2,1); filter: saturate(.9); }
-  .gallery figure:hover img { transform: scale(1.04); }
-  .gallery .g-main { grid-row: span 2; }
-  .gallery .g-main img { object-position: 70% center; }
-  .gallery .g-array img { object-fit: contain; background: #e9e7e2; }
-  .gallery figcaption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .credit { font-size: 12px; color: var(--muted); margin: 12px 0 0; }
+  .spiral-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 88px; }
+  .spiral-fig { margin: 0; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; position: relative; overflow: hidden; }
+  .spiral-fig svg { display: block; width: 100%; height: auto; }
+  .spiral-fig .readout { position: absolute; left: 18px; bottom: 14px; font: 400 11px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); letter-spacing: .04em; }
+  .spiral-fig .readout b { color: var(--sage); font-weight: 500; }
+  .spiral-copy .label { display: block; margin-bottom: 14px; }
+  .spiral-copy h3 { font-size: 28px; margin-bottom: 16px; }
+  .spiral-copy p { color: var(--muted); margin: 0 0 16px; }
+  .spiral-copy .eq { font-family: Newsreader, serif; font-style: italic; font-size: 20px; color: var(--ink); margin: 22px 0; letter-spacing: .02em; }
+  .legend { list-style: none; padding: 0; margin: 22px 0 0; font-size: 13px; color: var(--muted); display: grid; gap: 8px; }
+  .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 10px; vertical-align: middle; }
 
   /* Recognition & path */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; }
@@ -173,8 +175,7 @@
     .venture { grid-template-columns: 36px 1fr; }
     .venture .meta { grid-column: 2; text-align: left; }
     .small-projects { grid-template-columns: 1fr; gap: 28px; }
-    .gallery { grid-template-columns: 1fr; grid-auto-rows: 240px; }
-    .gallery .g-main { grid-row: auto; }
+    .spiral-panel { grid-template-columns: 1fr; gap: 36px; margin-top: 64px; }
     .sec-head { margin-bottom: 44px; }
   }
   @media (max-width: 560px) {
@@ -241,13 +242,21 @@
       <li class="venture reveal">
         <span class="n">01</span>
         <div>
+          <h3>Beacon Surgical Ltd.</h3>
+          <p>A medical device company and quasi-spinout from King’s College London, developing ultrasound-guided fibre-optic needle tracking from my PhD. I led strategy, fundraising, product development and clinical translation.</p>
+        </div>
+        <div class="meta"><b>Co-founder & CEO</b>Sep 2025 – Jul 2026</div>
+      </li>
+      <li class="venture reveal">
+        <span class="n">02</span>
+        <div>
           <h3>DeepTech Founders’ Club</h3>
           <p>I founded the DeepTech Founders’ Club under the Outstanding Young Scholars Society (OYSS) UK, a society of Chinese scholars and entrepreneurs in the UK led by <a class="link" href="https://warwick.ac.uk/fac/sci/eng/people/sai_gu/" target="_blank" rel="noopener">Prof Sai Gu FREng</a>, Deputy Pro-Vice-Chancellor (East and South East Asia) at the University of Warwick. The club brings together <span class="fig">3,000+</span> researchers, founders, investors and industry partners to get more deep tech out of universities.</p>
         </div>
         <div class="meta"><b>Founder</b>2026 – now<b style="margin-top:10px">OYSS Vice President, London</b>2025 – now</div>
       </li>
       <li class="venture reveal">
-        <span class="n">02</span>
+        <span class="n">03</span>
         <div>
           <h3>Neubond</h3>
           <p>An Imperial College spinout developing a robotic prosthetic arm, from my MRes in Medical Device Design & Entrepreneurship. My first venture: I did the market research and business plan and pitched it.</p>
@@ -316,19 +325,31 @@
       <div class="copy reveal">
         <p class="big">A needle that tells the scanner where it is.</p>
         <p>My PhD at the School of Biomedical Engineering & Imaging Sciences tackled a simple problem: under ultrasound, a needle tip is easy to lose. I built fibre-optic transducers that sit inside the needle and talk to the probe, so the tip can be located in 3D, in real time, on a volumetric image.</p>
-        <p>I validated the system on a femoral nerve block simulator, a step towards safer regional anaesthesia.</p>
+        <p>I validated the system on a femoral nerve block simulator, a step towards safer regional anaesthesia, then co-founded Beacon Surgical to take it towards the clinic.</p>
       </div>
       <figure class="scan reveal" style="margin:0" aria-label="Animation: a needle advances through tissue while its tip emits ultrasound pulses that are picked up by a probe array, locating it in real time">
         <svg id="scan" viewBox="0 0 600 380"></svg>
         <div class="readout" id="readout">tracking · <b>x 0.0 mm</b> · <b>depth 0.0 mm</b></div>
       </figure>
     </div>
-    <div class="gallery reveal">
-      <figure class="g-main"><img src="assets/research-scene.jpg" alt="Rendering of a volumetric imaging probe on the body with a fibre-optic needle entering beside it" loading="lazy"><figcaption>Volumetric probe and fibre-optic needle</figcaption></figure>
-      <figure><img src="assets/research-phantom.jpg" alt="Lab experiment: a fibre-optic needle and imaging probe on a femoral nerve block phantom" loading="lazy"><figcaption>Testing on a femoral nerve block phantom</figcaption></figure>
-      <figure class="g-array"><img src="assets/research-array.jpg" alt="A 256-channel spiral sparse matrix array" loading="lazy"><figcaption>256-channel spiral sparse array</figcaption></figure>
+    <div class="spiral-panel">
+      <figure class="spiral-fig reveal" aria-label="Animation: 256 receive elements laid out on a Fermat spiral light up as an ultrasound pulse from the needle tip reaches them">
+        <svg id="spiral" viewBox="0 0 440 440"></svg>
+        <div class="readout" id="spiral-readout">256 elements · golden angle <b>137.5°</b></div>
+      </figure>
+      <div class="spiral-copy reveal">
+        <span class="label">Concept · sparse matrix array</span>
+        <h3>Listening with 256 points</h3>
+        <p>A 2D matrix probe has thousands of elements. To image and track in 3D with far fewer channels, the active elements can be placed on a Fermat’s spiral, each rotated by the golden angle from the last.</p>
+        <div class="eq">r<sub>n</sub> = a√n, &nbsp; θ<sub>n</sub> = n · 137.5°</div>
+        <p>The layout covers the aperture evenly but never repeats, which suppresses grating lobes. When the needle tip sends a pulse, each element hears it at a slightly different time, and those delays pinpoint the tip in 3D.</p>
+        <ul class="legend">
+          <li><i style="background:var(--faint)"></i>Idle element</li>
+          <li><i style="background:var(--sage)"></i>Element receiving the tip’s pulse</li>
+          <li><i style="background:var(--clay)"></i>Estimated tip position</li>
+        </ul>
+      </div>
     </div>
-    <p class="credit reveal">Figures from Liang W. et al., <a class="link" href="https://arxiv.org/abs/2509.11310" target="_blank" rel="noopener">IEEE Sensors Journal (2026), arXiv:2509.11310</a>.</p>
     <ul class="pubs reveal">
       <li><span><a class="link" href="https://arxiv.org/abs/2509.11310" target="_blank" rel="noopener">Volumetric ultrasound imaging with a sparse matrix array and integrated fiber-optic sensing for robust needle tracking</a></span><span>IEEE Sensors Journal · 2026</span></li>
       <li><span><a class="link" href="https://pubmed.ncbi.nlm.nih.gov/41880765/" target="_blank" rel="noopener">Multilateration-based needle tracking with 3D ultrasound imaging for guiding minimally invasive procedures</a></span><span>Physics in Medicine & Biology · 2026</span></li>
@@ -509,6 +530,62 @@
     if (visible && !running) { running = true; requestAnimationFrame(frame); }
   }).observe(svg);
   if (reduce) requestAnimationFrame(frame);
+
+
+  /* ---------- Fermat-spiral sparse array: elements light as the tip's pulse arrives ---------- */
+  (function () {
+    var sv = document.getElementById('spiral'); if (!sv) return;
+    var N = 256, cx = 220, cy = 214, R = 150, GA = Math.PI * (3 - Math.sqrt(5));
+    function mk(n, a, parent) { var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); (parent || sv).appendChild(e); return e; }
+    mk('rect', { x: cx - R - 22, y: cy - R - 22, width: 2 * R + 44, height: 2 * R + 44, rx: 26, fill: 'none', stroke: 'var(--line)', 'stroke-width': 1.2 });
+    mk('line', { x1: cx - R - 22, x2: cx + R + 22, y1: cy, y2: cy, stroke: 'var(--line)', 'stroke-width': 1 });
+    mk('line', { x1: cx, x2: cx, y1: cy - R - 22, y2: cy + R + 22, stroke: 'var(--line)', 'stroke-width': 1 });
+    // faint spiral guide through the first elements
+    var d = '';
+    for (var t = 0; t <= 40; t += 0.05) { var rr = R * Math.sqrt(t / 40) ; d += (t ? 'L' : 'M') + (cx + rr * Math.cos(t * 2.4)).toFixed(1) + ' ' + (cy + rr * Math.sin(t * 2.4)).toFixed(1); }
+    mk('path', { d: d, fill: 'none', stroke: 'var(--line)', 'stroke-width': 1 });
+    var els = [];
+    for (var n = 1; n <= N; n++) {
+      var r = R * Math.sqrt(n / N), th = n * GA;
+      var x = cx + r * Math.cos(th), y = cy + r * Math.sin(th);
+      els.push({ x: x, y: y, lvl: 0, node: mk('circle', { cx: x, cy: y, r: 3.2, fill: 'var(--faint)' }) });
+    }
+    var ring = mk('circle', { r: 0, fill: 'none', stroke: 'var(--sage)', 'stroke-width': 1, opacity: 0 });
+    var mark = mk('g', { stroke: 'var(--clay)', 'stroke-width': 1.4 });
+    mk('circle', { r: 7, fill: 'none' }, mark); mk('line', { x1: -13, x2: 13, y1: 0, y2: 0 }, mark); mk('line', { x1: 0, x2: 0, y1: -13, y2: 13 }, mark);
+    var ro = document.getElementById('spiral-readout');
+    var t0 = null, pulseAt = 0, src = { x: cx, y: cy, z: 60 }, PERIOD = 2400, SPEED = 0.16;
+    var vis = false, run = false;
+    function tipAt(ms) {
+      var a = ms / 7000;
+      return { x: cx + 70 * Math.cos(a * 2.1), y: cy + 55 * Math.sin(a * 2.9), z: 50 + 30 * Math.sin(a * 1.3) };
+    }
+    function step(now) {
+      if (!t0) t0 = now;
+      var el = now - t0;
+      if (el - pulseAt > PERIOD || pulseAt === 0) { pulseAt = el || 1; src = tipAt(el); }
+      var dt = el - pulseAt, front = dt * SPEED;
+      els.forEach(function (e) {
+        var arrive = Math.sqrt(Math.pow(e.x - src.x, 2) + Math.pow(e.y - src.y, 2) + src.z * src.z) - src.z;
+        var lvl = front >= arrive ? Math.max(0, 1 - (front - arrive) / 70) : 0;
+        if (Math.abs(lvl - e.lvl) > 0.02) {
+          e.lvl = lvl;
+          e.node.setAttribute('fill', lvl > 0.05 ? 'var(--sage)' : 'var(--faint)');
+          e.node.setAttribute('r', (3.2 + lvl * 1.8).toFixed(2));
+          e.node.setAttribute('opacity', lvl > 0.05 ? (0.45 + 0.55 * lvl).toFixed(2) : 1);
+        }
+      });
+      ring.setAttribute('cx', src.x); ring.setAttribute('cy', src.y); ring.setAttribute('r', Math.max(0, front));
+      ring.setAttribute('opacity', Math.max(0, 0.5 - front / 500).toFixed(2));
+      var settled = front > 260;
+      mark.setAttribute('transform', 'translate(' + src.x.toFixed(1) + ',' + src.y.toFixed(1) + ')');
+      mark.setAttribute('opacity', settled ? 1 : 0.25);
+      ro.innerHTML = '256 elements · golden angle <b>137.5°</b>' + (settled ? ' · tip <b>' + ((src.x - cx) * 0.1).toFixed(1) + ', ' + ((src.y - cy) * 0.1).toFixed(1) + ', ' + (src.z * 0.4).toFixed(1) + ' mm</b>' : ' · <b>listening…</b>');
+      if (!reduce && vis) requestAnimationFrame(step); else run = false;
+    }
+    new IntersectionObserver(function (es) { vis = es[0].isIntersecting; if (vis && !run) { run = true; requestAnimationFrame(step); } }).observe(sv);
+    if (reduce) requestAnimationFrame(step);
+  })();
 
   /* ---------- CV gate: press-and-hold human check, then decrypt and download ---------- */
   var gate = document.getElementById('gate'), hold = document.getElementById('hold'),
