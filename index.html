@@ -102,6 +102,12 @@
   .enso circle { fill: none; stroke: var(--sage); stroke-width: 1.4; stroke-linecap: round; stroke-dasharray: 640; stroke-dashoffset: 640; transform: rotate(-70deg); transform-origin: center; animation: draw 3.2s cubic-bezier(.6,.05,.3,1) .4s forwards; opacity: .7; }
   @keyframes draw { to { stroke-dashoffset: 70; } }
 
+  /* About */
+  .about { max-width: 60ch; }
+  .about p { margin: 0 0 20px; color: var(--muted); }
+  .about p.big { font-family: Newsreader, Georgia, serif; font-size: clamp(21px, 2.3vw, 26px); line-height: 1.5; color: var(--ink); margin-bottom: 26px; }
+  .about p:last-child { margin-bottom: 0; }
+
   /* Sections */
   section.block { padding: 120px 0; }
   .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 64px; border-top: 1px solid var(--line); padding-top: 28px; }
@@ -221,6 +227,7 @@
   <div class="wrap">
     <a class="brand" href="#top">James Liang</a>
     <nav id="nav">
+      <a href="#about">About</a>
       <a href="#building">Building</a>
       <a href="#making">Making</a>
       <a href="#research">Research</a>
@@ -259,6 +266,20 @@
     <div class="portrait">
       <img src="assets/james.jpg" alt="Portrait of Weidong (James) Liang">
       <svg class="enso" viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>About</h2><span class="label">In brief</span></div>
+    <div class="about reveal">
+      <p class="big">I’m Weidong (James) Liang, a biomedical engineer and Postdoctoral Research Associate in the Translational AI Research (TAIR) Lab at King’s College London.</p>
+      <p>My current work focuses on developing trustworthy AI tools to help dentists review clinical records, identify documentation gaps and improve record quality. I work closely with clinicians and AI researchers, bringing together clinical guidance, expert feedback and user-centred design to support tools that fit everyday dental practice.</p>
+      <p>My research interests span healthcare AI, biomedical imaging, image-guided interventions and medical device development. I’m particularly interested in translating engineering research into practical solutions to clinical problems, connecting technical development with clinical evaluation and entrepreneurship.</p>
+      <p>My doctoral research in Biomedical Engineering at King’s College London focused on 3D volumetric ultrasound imaging and fibre-optic needle tracking for image-guided procedures, under the supervision of Dr Wenfeng Xia and Professor Sebastien Ourselin FREng.</p>
+      <p>I hold an MRes in Medical Device Design and Entrepreneurship from Imperial College London, where I was supervised by Professor Dario Farina and Professor James Moore Jr. I also earned a first-class BEng in Mechanical Engineering from the University of Birmingham, where I was supervised by Professor Duc Truong Pham OBE, FREng.</p>
     </div>
   </div>
 </section>
