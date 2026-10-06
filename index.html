@@ -125,16 +125,26 @@
   .venture .meta b:not(:first-of-type) { margin-top: 16px; }
   .fig { font-family: Newsreader, serif; color: var(--ink); }
 
-  /* Growth path figure */
-  .growth { margin: 4px 0 84px; }
-  .growth figure { margin: 0; }
-  #growth { display: block; width: 100%; height: auto; overflow: visible; }
-  #growth text { font-family: Inter, system-ui, sans-serif; letter-spacing: .01em; }
-  #growth text.g-title { font-family: Newsreader, Georgia, serif; }
-  #growth .g-node { opacity: 0; transform: translateY(7px); transition: opacity .9s ease, transform .9s ease; }
-  #growth.in .g-node { opacity: 1; transform: none; }
-  #growth .g-cur { transform-box: fill-box; transform-origin: center; animation: gpulse 2.6s ease-in-out infinite; }
-  @keyframes gpulse { 0%, 100% { opacity: .16; transform: scale(1); } 50% { opacity: .32; transform: scale(1.28); } }
+  /* Journey illustration */
+  .growth { margin: 2px 0 80px; display: flex; justify-content: flex-end; }
+  .toon { margin: 0; width: 300px; max-width: 100%; }
+  #toon { display: block; width: 100%; height: auto; overflow: visible; }
+  #toon .ln { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  #toon .ac { stroke: var(--sage); }
+  #toon .cl { stroke: var(--clay); }
+  #toon .thin { stroke-width: 1.35; }
+  #toon .dot { fill: var(--ink); stroke: none; }
+  #toon .fillhead { fill: var(--paper); }
+  #toon .nodefill { fill: var(--clay); }
+  #toon .stage { opacity: 0; transform: translateY(4px); transition: opacity .8s ease, transform .8s ease; }
+  #toon .stage.on { opacity: 1; transform: none; }
+  #toon .fig { animation: toonbob 4.2s ease-in-out infinite; }
+  @keyframes toonbob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  .toon-cap { text-align: center; font-family: Newsreader, Georgia, serif; font-size: 18px; color: var(--ink); margin-top: 14px; transition: opacity .35s ease; }
+  .toon-cap .yr { font-family: Inter, system-ui, sans-serif; font-size: 13px; color: var(--muted); }
+  .toon-dots { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
+  .toon-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); transition: background .4s ease, transform .4s ease; }
+  .toon-dots i.on { background: var(--clay); transform: scale(1.15); }
 
   /* Products */
   .product { display: grid; grid-template-columns: 1fr; gap: 28px; margin-bottom: 96px; }
@@ -218,6 +228,7 @@
     .small-projects { grid-template-columns: 1fr; gap: 28px; }
     .spiral-panel { grid-template-columns: 1fr; gap: 36px; margin-top: 64px; }
     .sec-head { margin-bottom: 44px; }
+    .growth { justify-content: center; }
   }
   @media (max-width: 560px) {
     .wrap { padding: 0 16px; }
@@ -229,8 +240,8 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
     .enso circle { animation: none; stroke-dashoffset: 70; }
-    #growth .g-node { opacity: 1; transform: none; transition: none; }
-    #growth .g-cur { animation: none; }
+    #toon .stage { transition: none; }
+    #toon .fig { animation: none; }
     html { scroll-behavior: auto; }
   }
 </style>
@@ -303,8 +314,82 @@
   <div class="wrap">
     <div class="sec-head reveal"><h2>Building</h2><span class="label">Ventures & communities</span></div>
     <div class="growth reveal">
-      <figure style="margin:0" aria-label="Growth path: from Mechanical Engineering (BEng, Birmingham, 2018) to Biomedical Engineering (PhD, King’s College London, 2021), through translational research and entrepreneurship, to AI and Software as a Medical Device as a postdoctoral researcher in 2026.">
-        <svg id="growth" role="img"></svg>
+      <figure class="toon" aria-label="A simple line illustration animating James's path from mechanical engineer to AI postdoctoral researcher, cycling through four roles.">
+        <svg id="toon" viewBox="0 6 340 216" role="img">
+          <g class="fig">
+            <circle class="ln fillhead" cx="170" cy="118" r="33"/>
+            <circle class="dot" cx="160" cy="115" r="2.2"/>
+            <circle class="dot" cx="180" cy="115" r="2.2"/>
+            <path class="ln" d="M159 128 Q170 137 181 128"/>
+            <path class="ln" d="M163 150 V159"/>
+            <path class="ln" d="M177 150 V159"/>
+            <path class="ln" d="M124 214 C124 178 150 160 170 160 C190 160 214 178 214 214"/>
+
+            <g class="stage" id="st0">
+              <path class="ln" d="M142 96 Q170 64 198 96"/>
+              <path class="ln" d="M132 98 Q170 110 208 98"/>
+              <path class="ln" d="M167 76 Q170 72 173 76"/>
+              <circle class="ln ac" cx="258" cy="98" r="14"/>
+              <circle class="ln ac" cx="258" cy="98" r="5"/>
+              <line class="ln ac" x1="272" y1="98" x2="277" y2="98"/>
+              <line class="ln ac" x1="267.9" y1="107.9" x2="271.4" y2="111.4"/>
+              <line class="ln ac" x1="258" y1="112" x2="258" y2="117"/>
+              <line class="ln ac" x1="248.1" y1="107.9" x2="244.6" y2="111.4"/>
+              <line class="ln ac" x1="244" y1="98" x2="239" y2="98"/>
+              <line class="ln ac" x1="248.1" y1="88.1" x2="244.6" y2="84.6"/>
+              <line class="ln ac" x1="258" y1="84" x2="258" y2="79"/>
+              <line class="ln ac" x1="267.9" y1="88.1" x2="271.4" y2="84.6"/>
+            </g>
+
+            <g class="stage" id="st1">
+              <rect class="ln ac" x="244" y="82" width="22" height="18" rx="4"/>
+              <line class="ln ac" x1="250" y1="82" x2="250" y2="74"/>
+              <line class="ln ac" x1="260" y1="82" x2="260" y2="74"/>
+              <line class="ln ac" x1="248" y1="72" x2="262" y2="72"/>
+              <path class="ln ac thin" d="M246 102 Q258 116 270 102"/>
+              <path class="ln ac thin" d="M240 104 Q258 124 276 104"/>
+              <path class="ln ac thin" d="M234 106 Q258 132 282 106"/>
+            </g>
+
+            <g class="stage" id="st2">
+              <circle class="ln" cx="170" cy="44" r="14"/>
+              <path class="ln" d="M165 44 Q170 50 175 44"/>
+              <path class="ln" d="M162 58 H178"/>
+              <path class="ln" d="M164 62 H176"/>
+              <path class="ln" d="M166 66 H174"/>
+              <path class="ln cl thin" d="M170 24 V16"/>
+              <path class="ln cl thin" d="M156 30 L150 24"/>
+              <path class="ln cl thin" d="M184 30 L190 24"/>
+              <path class="ln cl thin" d="M150 44 H142"/>
+              <path class="ln cl thin" d="M190 44 H198"/>
+            </g>
+
+            <g class="stage" id="st3">
+              <path class="ln" d="M138 90 L170 76 L202 90 L170 104 Z"/>
+              <circle class="dot" cx="170" cy="90" r="2"/>
+              <path class="ln" d="M156 97 Q170 106 184 97"/>
+              <path class="ln" d="M202 90 L212 90"/>
+              <path class="ln" d="M212 90 V110"/>
+              <circle class="ln cl" cx="212" cy="112" r="2.6"/>
+              <line class="ln ac thin" x1="236" y1="90" x2="258" y2="98"/>
+              <line class="ln ac thin" x1="236" y1="90" x2="258" y2="118"/>
+              <line class="ln ac thin" x1="236" y1="108" x2="258" y2="98"/>
+              <line class="ln ac thin" x1="236" y1="108" x2="258" y2="118"/>
+              <line class="ln ac thin" x1="236" y1="126" x2="258" y2="98"/>
+              <line class="ln ac thin" x1="236" y1="126" x2="258" y2="118"/>
+              <line class="ln ac thin" x1="258" y1="98" x2="280" y2="108"/>
+              <line class="ln ac thin" x1="258" y1="118" x2="280" y2="108"/>
+              <circle class="ln ac" cx="236" cy="90" r="4"/>
+              <circle class="ln ac" cx="236" cy="108" r="4"/>
+              <circle class="ln ac" cx="236" cy="126" r="4"/>
+              <circle class="ln ac" cx="258" cy="98" r="4"/>
+              <circle class="ln ac" cx="258" cy="118" r="4"/>
+              <circle class="ln cl nodefill" cx="280" cy="108" r="4.5"/>
+            </g>
+          </g>
+        </svg>
+        <figcaption class="toon-cap" id="toon-cap"><span id="toon-label">Mechanical Engineer</span> · <span class="yr" id="toon-year">2018</span></figcaption>
+        <div class="toon-dots" id="toon-dots" aria-hidden="true"></div>
       </figure>
     </div>
     <ol class="ventures">
@@ -698,78 +783,28 @@
     if (reduce) requestAnimationFrame(step);
   })();
 
-  /* ---------- Growth path: mechanical → biomedical → translational → AI SaMD ---------- */
+  /* ---------- Journey: a line-drawn figure transforming through four roles ---------- */
   (function () {
-    var sv = document.getElementById('growth'); if (!sv) return;
-    var stages = [
-      { t: 'Mechanical Engineering', s: 'BEng · Birmingham', y: '2018' },
-      { t: 'Biomedical Engineering', s: 'PhD · King’s College London', y: '2021' },
-      { t: 'Translational Research', s: 'Clinical translation · entrepreneurship', y: '2025' },
-      { t: 'AI · SaMD', s: 'Postdoctoral researcher', y: '2026' }
-    ];
-    function mk(n, a, parent) { var e = document.createElementNS(NS, n); for (var k in a) paint(e, k, a[k]); (parent || sv).appendChild(e); return e; }
-    var mode = null, shown = false, curProg = null;
-
-    function render() {
-      while (sv.firstChild) sv.firstChild.remove();
-      var horiz = sv.clientWidth >= 640; mode = horiz ? 'h' : 'v';
-      var W, H, pts = [], i;
-      if (horiz) {
-        W = 960; H = 250;
-        var xs = [122, 380, 626, 854], ys = [184, 140, 104, 60];
-        for (i = 0; i < 4; i++) pts.push({ x: xs[i], y: ys[i] });
-      } else {
-        W = 360; H = 556;
-        var yy = [66, 210, 354, 488];
-        for (i = 0; i < 4; i++) pts.push({ x: 58, y: yy[i] });
-      }
-      sv.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-      sv.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-      var d = 'M ' + pts[0].x + ' ' + pts[0].y;
-      for (var k = 1; k < 4; k++) {
-        var a = pts[k - 1], b = pts[k];
-        if (horiz) { var mx = (a.x + b.x) / 2; d += ' C ' + mx + ' ' + a.y + ' ' + mx + ' ' + b.y + ' ' + b.x + ' ' + b.y; }
-        else { var my = (a.y + b.y) / 2; d += ' C ' + a.x + ' ' + my + ' ' + b.x + ' ' + my + ' ' + b.x + ' ' + b.y; }
-      }
-      mk('path', { d: d, fill: 'none', stroke: 'var(--line)', 'stroke-width': 1.5 });
-      var prog = mk('path', { d: d, fill: 'none', stroke: 'var(--sage)', 'stroke-width': 2, 'stroke-linecap': 'round' });
-      var L = prog.getTotalLength();
-      prog.style.strokeDasharray = L;
-      prog.style.strokeDashoffset = (reduce || shown) ? 0 : L;
-      prog.style.transition = reduce ? 'none' : 'stroke-dashoffset 1.9s cubic-bezier(.6,.05,.3,1)';
-      curProg = prog;
-      pts.forEach(function (p, idx) {
-        var last = idx === 3;
-        var g = mk('g', { class: 'g-node' });
-        if (!reduce) g.style.transitionDelay = (0.45 + idx * 0.42) + 's';
-        mk('circle', { cx: p.x, cy: p.y, r: last ? 13 : 10, fill: last ? 'var(--clay)' : 'var(--sage)', opacity: 0.16, class: last ? 'g-cur' : '' }, g);
-        mk('circle', { cx: p.x, cy: p.y, r: last ? 5.5 : 4.5, fill: last ? 'var(--clay)' : 'var(--sage)' }, g);
-        mk('circle', { cx: p.x, cy: p.y, r: last ? 2 : 1.6, fill: 'var(--paper)' }, g);
-        var tA, tx, yT, yS, yY;
-        if (horiz) { tA = idx === 0 ? 'start' : (last ? 'end' : 'middle'); tx = p.x; yT = p.y - 30; yS = p.y - 14; yY = p.y + 24; }
-        else { tA = 'start'; tx = p.x + 22; yT = p.y - 4; yS = p.y + 15; yY = p.y + 32; }
-        var e1 = mk('text', { x: tx, y: yT, 'text-anchor': tA, fill: 'var(--ink)', 'font-size': last ? 16 : 15, class: 'g-title' }, g); e1.textContent = stages[idx].t;
-        var e2 = mk('text', { x: tx, y: yS, 'text-anchor': tA, fill: 'var(--muted)', 'font-size': 11.5 }, g); e2.textContent = stages[idx].s;
-        var e3 = mk('text', { x: tx, y: yY, 'text-anchor': tA, fill: last ? 'var(--clay)' : 'var(--muted)', 'font-size': 12.5 }, g); e3.textContent = stages[idx].y;
-      });
-      if (!reduce) {
-        var glow = mk('circle', { r: 8, fill: 'var(--sage)', opacity: 0.18 });
-        var am2 = document.createElementNS(NS, 'animateMotion'); am2.setAttribute('dur', '3.8s'); am2.setAttribute('repeatCount', 'indefinite'); am2.setAttribute('path', d); am2.setAttribute('begin', '2s'); glow.appendChild(am2);
-        var pm = mk('circle', { r: 3.4, fill: 'var(--sage)', opacity: 0.9 });
-        var am = document.createElementNS(NS, 'animateMotion'); am.setAttribute('dur', '3.8s'); am.setAttribute('repeatCount', 'indefinite'); am.setAttribute('path', d); am.setAttribute('begin', '2s'); pm.appendChild(am);
-      }
-      if (shown) { sv.classList.add('in'); requestAnimationFrame(function () { prog.style.strokeDashoffset = '0'; }); }
+    var sv = document.getElementById('toon'); if (!sv) return;
+    var stages = sv.querySelectorAll('.stage');
+    var labels = [['Mechanical Engineer', '2018'], ['Biomedical Engineer', '2021'], ['Founder · Translational', '2025'], ['AI · SaMD Postdoc', '2026']];
+    var lab = document.getElementById('toon-label'), yr = document.getElementById('toon-year'), cap = document.getElementById('toon-cap');
+    var dotsWrap = document.getElementById('toon-dots'), dots = [], i;
+    for (i = 0; i < stages.length; i++) { var dd = document.createElement('i'); dotsWrap.appendChild(dd); dots.push(dd); }
+    var cur = 0, timer = null;
+    function setText(n) { lab.textContent = labels[n][0]; yr.textContent = labels[n][1]; }
+    function show(n) {
+      for (var j = 0; j < stages.length; j++) { stages[j].classList.toggle('on', j === n); dots[j].classList.toggle('on', j === n); }
+      if (cap && !reduce) { cap.style.opacity = 0; setTimeout(function () { setText(n); cap.style.opacity = 1; }, 180); }
+      else setText(n);
+      cur = n;
     }
-
-    function reveal() {
-      if (shown) return; shown = true; sv.classList.add('in');
-      if (curProg) requestAnimationFrame(function () { curProg.style.strokeDashoffset = '0'; });
-    }
-
-    render();
-    if (reduce) { shown = true; sv.classList.add('in'); }
-    new IntersectionObserver(function (es) { if (es[0].isIntersecting) reveal(); }, { rootMargin: '0px 0px -12% 0px' }).observe(sv);
-    var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { var m = sv.clientWidth >= 640 ? 'h' : 'v'; if (m !== mode) render(); }, 220); });
+    function next() { show((cur + 1) % stages.length); }
+    function start() { if (timer || reduce) return; timer = setInterval(next, 3400); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    show(0);
+    if (reduce) { show(stages.length - 1); return; }
+    new IntersectionObserver(function (es) { if (es[0].isIntersecting) start(); else stop(); }).observe(sv);
   })();
 
   /* ---------- CV gate: press-and-hold human check, then decrypt and download ---------- */
