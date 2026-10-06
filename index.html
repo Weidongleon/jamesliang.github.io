@@ -125,9 +125,9 @@
   .venture .meta b:not(:first-of-type) { margin-top: 16px; }
   .fig { font-family: Newsreader, serif; color: var(--ink); }
 
-  /* Zen journey loop */
+  /* Zen astrolabe loop */
   .growth { margin: 2px 0 80px; display: flex; justify-content: flex-end; }
-  .zenwrap { margin: 0; width: 300px; max-width: 100%; }
+  .zenwrap { margin: 0; width: 320px; max-width: 100%; }
   #zen { display: block; width: 100%; height: auto; overflow: visible; }
   #zen .ln { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   #zen .ac { stroke: var(--sage); fill: none; }
@@ -136,17 +136,34 @@
   #zen .dot { fill: var(--ink); stroke: none; }
   #zen .fillhead { fill: var(--paper); }
   #zen .nodefill { fill: var(--clay); stroke: none; }
-  #zen .enso { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; opacity: .9; }
-  #zen .enso-seed { fill: var(--ink); }
-  #zen .aura { fill: var(--sage); opacity: .06; transform-box: fill-box; transform-origin: center; animation: zbreath 7s ease-in-out infinite; }
+  #zen .gc0 { stop-color: var(--sage); }
+  #zen .gc1 { stop-color: var(--clay); }
+  #zen .zv { stop-color: var(--sage); }
+  #zen .anchor { fill: none; stroke: none; }
+  #zen .ring-outer { fill: none; stroke: var(--sage); stroke-width: 1; opacity: .22; stroke-dasharray: 1 9; stroke-linecap: round; }
+  #zen .ring-main { fill: none; stroke: var(--ink); stroke-width: 2; opacity: .16; }
+  #zen .ring-inner { fill: none; stroke: var(--sage); stroke-width: 1; opacity: .25; }
+  #zen .ticks line { stroke: var(--sage); stroke-width: 1.4; opacity: .5; stroke-linecap: round; }
+  #zen .comet { fill: none; stroke: url(#gcomet); stroke-width: 4; stroke-linecap: round; }
+  #zen .comet-head { fill: var(--clay); }
+  #zen .comet-glow { fill: var(--clay); opacity: .22; }
+  #zen .star { fill: var(--sage); opacity: .7; }
+  #zen .star.cl { fill: var(--clay); }
+  #zen .spin { transform-box: fill-box; transform-origin: center; }
+  #zen .spin-outer { animation: zspin 90s linear infinite; }
+  #zen .spin-comet { animation: zspin 16s linear infinite; }
+  #zen .spin-ticks { animation: zspinr 54s linear infinite; }
+  #zen .spin-s1 { animation: zspin 26s linear infinite; }
+  #zen .spin-s2 { animation: zspinr 34s linear infinite; }
+  #zen .spin-s3 { animation: zspin 44s linear infinite; }
+  @keyframes zspin { to { transform: rotate(360deg); } }
+  @keyframes zspinr { to { transform: rotate(-360deg); } }
   #zen .fig { transform-box: fill-box; transform-origin: center; animation: zbreath 6s ease-in-out infinite; }
-  @keyframes zbreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
-  #zen .bloom { transform-box: fill-box; transform-origin: center; opacity: 0; animation: zbloom 14s ease-in-out infinite; }
-  @keyframes zbloom { 0%, 28% { opacity: 0; transform: scale(.5); } 50% { opacity: 1; transform: scale(1.35); } 72%, 100% { opacity: 0; transform: scale(.5); } }
-  #zen .orbit-dot { fill: var(--sage); }
-  #zen .orbit-glow { fill: var(--sage); opacity: .2; }
+  @keyframes zbreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+  #zen .idea-item { transform-box: fill-box; transform-origin: center; opacity: 0; animation: zidea 16s ease-in-out infinite; }
+  @keyframes zidea { 0% { opacity: 0; transform: scale(.55) rotate(-8deg); } 4% { opacity: 1; transform: scale(1) rotate(0); } 20% { opacity: 1; transform: scale(1); } 25% { opacity: 0; transform: scale(.7) rotate(8deg); } 100% { opacity: 0; } }
   #zen .particle { fill: var(--sage); opacity: 0; transform-box: fill-box; transform-origin: center; animation: zdrift 8s ease-in-out infinite; }
-  @keyframes zdrift { 0% { opacity: 0; transform: translate(0, 0); } 20% { opacity: .45; } 75% { opacity: .2; } 100% { opacity: 0; transform: translate(5px, -46px); } }
+  @keyframes zdrift { 0% { opacity: 0; transform: translate(0, 0); } 20% { opacity: .4; } 75% { opacity: .18; } 100% { opacity: 0; transform: translate(5px, -48px); } }
 
   /* Products */
   .product { display: grid; grid-template-columns: 1fr; gap: 28px; margin-bottom: 96px; }
@@ -242,9 +259,9 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
     .enso circle { animation: none; stroke-dashoffset: 70; }
-    #zen .fig, #zen .aura, #zen .bloom { animation: none; }
-    #zen .bloom { opacity: .85; transform: none; }
-    #zen .orbit, #zen .particle { display: none; }
+    #zen .spin, #zen .fig, #zen .idea-item { animation: none; }
+    #zen .idea-item:nth-of-type(4) { opacity: 1; }
+    #zen .particle { display: none; }
     html { scroll-behavior: auto; }
   }
 </style>
@@ -317,73 +334,86 @@
   <div class="wrap">
     <div class="sec-head reveal"><h2>Building</h2><span class="label">Ventures & communities</span></div>
     <div class="growth reveal">
-      <figure class="zenwrap" aria-label="A continuous Zen-style line animation: James seated at the centre of an ensō ink circle while a brush traces the ring and his four roles — mechanical engineering, biomedical imaging, translational research and AI — bloom in turn.">
-        <svg id="zen" viewBox="0 0 340 340" role="img">
-          <circle class="aura" cx="170" cy="180" r="74"/>
-          <path class="enso" d="M207.4 47.6 A128 128 0 1 1 132.6 47.6"/>
-          <circle class="enso-seed" cx="207.4" cy="47.6" r="3.4"/>
+      <figure class="zenwrap" aria-label="A refined Zen animation: James at the centre of several slowly turning rings, a gradient brush sweeping the main circle, drifting stars, and an emblem above his head morphing through his four roles — mechanical engineering, biomedical imaging, translational research and AI.">
+        <svg id="zen" viewBox="0 0 360 360" role="img">
+          <defs>
+            <linearGradient id="gcomet" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" class="gc0"/>
+              <stop offset="100%" class="gc1"/>
+            </linearGradient>
+            <radialGradient id="gglow" cx="50%" cy="46%" r="52%">
+              <stop offset="0%" class="zv" stop-opacity="0.10"/>
+              <stop offset="70%" class="zv" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
 
-          <g class="fig">
-            <circle class="ln fillhead" cx="170" cy="150" r="28"/>
-            <circle class="dot" cx="161" cy="148" r="2"/>
-            <circle class="dot" cx="179" cy="148" r="2"/>
-            <path class="ln" d="M161 160 Q170 167 179 160"/>
-            <path class="ln" d="M164 176 V184"/>
-            <path class="ln" d="M176 176 V184"/>
-            <path class="ln" d="M132 232 C132 202 152 186 170 186 C188 186 208 202 208 232"/>
+          <circle cx="180" cy="178" r="152" fill="url(#gglow)"/>
+
+          <g class="spin spin-outer"><circle class="anchor" cx="180" cy="180" r="150"/><circle class="ring-outer" cx="180" cy="180" r="150"/></g>
+
+          <circle class="ring-main" cx="180" cy="180" r="124"/>
+
+          <g class="spin spin-comet">
+            <circle class="anchor" cx="180" cy="180" r="124"/>
+            <path class="comet" d="M92.3 92.3 A124 124 0 0 1 267.7 92.3"/>
+            <circle class="comet-glow" cx="267.7" cy="92.3" r="9"/>
+            <circle class="comet-head" cx="267.7" cy="92.3" r="4.2"/>
           </g>
 
-          <g transform="translate(234,59.2)"><g class="bloom" style="animation-delay:-6.44s">
-            <circle class="ln ac" cx="0" cy="0" r="8"/>
-            <circle class="ln ac" cx="0" cy="0" r="3"/>
-            <line class="ln ac" x1="8" y1="0" x2="11" y2="0"/>
-            <line class="ln ac" x1="5.66" y1="5.66" x2="7.78" y2="7.78"/>
-            <line class="ln ac" x1="0" y1="8" x2="0" y2="11"/>
-            <line class="ln ac" x1="-5.66" y1="5.66" x2="-7.78" y2="7.78"/>
-            <line class="ln ac" x1="-8" y1="0" x2="-11" y2="0"/>
-            <line class="ln ac" x1="-5.66" y1="-5.66" x2="-7.78" y2="-7.78"/>
-            <line class="ln ac" x1="0" y1="-8" x2="0" y2="-11"/>
-            <line class="ln ac" x1="5.66" y1="-5.66" x2="7.78" y2="-7.78"/>
-          </g></g>
+          <g class="spin spin-ticks">
+            <circle class="anchor" cx="180" cy="180" r="100"/>
+            <circle class="ring-inner" cx="180" cy="180" r="96"/>
+            <g class="ticks"><line x1="272.0" y1="180.0" x2="280.0" y2="180.0"/><line x1="259.67" y1="226.0" x2="266.6" y2="230.0"/><line x1="226.0" y1="259.67" x2="230.0" y2="266.6"/><line x1="180.0" y1="272.0" x2="180.0" y2="280.0"/><line x1="134.0" y1="259.67" x2="130.0" y2="266.6"/><line x1="100.33" y1="226.0" x2="93.4" y2="230.0"/><line x1="88.0" y1="180.0" x2="80.0" y2="180.0"/><line x1="100.33" y1="134.0" x2="93.4" y2="130.0"/><line x1="134.0" y1="100.33" x2="130.0" y2="93.4"/><line x1="180.0" y1="88.0" x2="180.0" y2="80.0"/><line x1="226.0" y1="100.33" x2="230.0" y2="93.4"/><line x1="259.67" y1="134.0" x2="266.6" y2="130.0"/></g>
+          </g>
 
-          <g transform="translate(280.8,234)"><g class="bloom" style="animation-delay:-2.58s">
-            <circle class="ln ac" cx="0" cy="0" r="4"/>
-            <circle class="ln ac thin" cx="0" cy="0" r="8" style="opacity:.6"/>
-            <circle class="ln ac thin" cx="0" cy="0" r="12" style="opacity:.35"/>
-          </g></g>
+          <g class="spin spin-s1"><circle class="anchor" cx="180" cy="180" r="138"/><circle class="star" cx="180" cy="42" r="1.8"/></g>
+          <g class="spin spin-s2"><circle class="anchor" cx="180" cy="180" r="110"/><circle class="star cl" cx="180" cy="70" r="1.5"/></g>
+          <g class="spin spin-s3"><circle class="anchor" cx="180" cy="180" r="158"/><circle class="star" cx="180" cy="22" r="1.4"/></g>
 
-          <g transform="translate(106,280.8)"><g class="bloom" style="animation-delay:1.29s">
-            <circle class="ln" cx="0" cy="-3" r="6"/>
-            <path class="ln" d="M-3 4 H3"/>
-            <path class="ln" d="M-2 6.5 H2"/>
-            <path class="ln cl thin" d="M0 -12 V-16"/>
-            <path class="ln cl thin" d="M-7 -8 L-10 -11"/>
-            <path class="ln cl thin" d="M7 -8 L10 -11"/>
-          </g></g>
+          <g class="fig">
+            <circle class="ln fillhead" cx="180" cy="168" r="26"/>
+            <circle class="dot" cx="172" cy="166" r="1.9"/>
+            <circle class="dot" cx="188" cy="166" r="1.9"/>
+            <path class="ln" d="M172 177 Q180 183 188 177"/>
+            <path class="ln" d="M174 192 V199"/>
+            <path class="ln" d="M186 192 V199"/>
+            <path class="ln" d="M144 246 C144 218 163 203 180 203 C197 203 216 218 216 246"/>
+          </g>
 
-          <g transform="translate(59.2,106)"><g class="bloom" style="animation-delay:5.15s">
-            <line class="ln ac thin" x1="-9" y1="-6" x2="1" y2="0"/>
-            <line class="ln ac thin" x1="-9" y1="6" x2="1" y2="0"/>
-            <line class="ln ac thin" x1="1" y1="0" x2="11" y2="0"/>
-            <circle class="ln ac" cx="-9" cy="-6" r="3"/>
-            <circle class="ln ac" cx="-9" cy="6" r="3"/>
-            <circle class="ln ac" cx="1" cy="0" r="3"/>
-            <circle class="nodefill" cx="11" cy="0" r="3.4"/>
-          </g></g>
-
-          <g class="orbit">
-            <circle class="orbit-glow" r="9"/>
-            <circle class="orbit-dot" r="3.6"/>
-            <animateMotion dur="14s" repeatCount="indefinite" rotate="auto" path="M207.4 47.6 A128 128 0 1 1 132.6 47.6"/>
-            <animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.95;1" dur="14s" repeatCount="indefinite"/>
+          <g class="idea" transform="translate(180,108)">
+            <g class="idea-item" style="animation-delay:0s">
+              <circle class="ln ac" cx="0" cy="0" r="7"/><circle class="ln ac" cx="0" cy="0" r="2.5"/><line class="ln ac thin" x1="7.0" y1="0.0" x2="9.5" y2="0.0"/><line class="ln ac thin" x1="4.95" y1="4.95" x2="6.72" y2="6.72"/><line class="ln ac thin" x1="0.0" y1="7.0" x2="0.0" y2="9.5"/><line class="ln ac thin" x1="-4.95" y1="4.95" x2="-6.72" y2="6.72"/><line class="ln ac thin" x1="-7.0" y1="0.0" x2="-9.5" y2="0.0"/><line class="ln ac thin" x1="-4.95" y1="-4.95" x2="-6.72" y2="-6.72"/><line class="ln ac thin" x1="-0.0" y1="-7.0" x2="-0.0" y2="-9.5"/><line class="ln ac thin" x1="4.95" y1="-4.95" x2="6.72" y2="-6.72"/>
+            </g>
+            <g class="idea-item" style="animation-delay:4s">
+              <circle class="ln ac" cx="0" cy="0" r="3"/>
+              <circle class="ln ac thin" cx="0" cy="0" r="6" style="opacity:.6"/>
+              <circle class="ln ac thin" cx="0" cy="0" r="9" style="opacity:.35"/>
+            </g>
+            <g class="idea-item" style="animation-delay:8s">
+              <circle class="ln" cx="0" cy="-2" r="5"/>
+              <path class="ln" d="M-2.5 4 H2.5"/>
+              <path class="ln" d="M-1.8 6 H1.8"/>
+              <path class="ln cl thin" d="M0 -10 V-13"/>
+              <path class="ln cl thin" d="M-6 -6.5 L-8.5 -9"/>
+              <path class="ln cl thin" d="M6 -6.5 L8.5 -9"/>
+            </g>
+            <g class="idea-item" style="animation-delay:12s">
+              <line class="ln ac thin" x1="-7" y1="-5" x2="2" y2="0"/>
+              <line class="ln ac thin" x1="-7" y1="5" x2="2" y2="0"/>
+              <line class="ln ac thin" x1="2" y1="0" x2="9" y2="0"/>
+              <circle class="ln ac" cx="-7" cy="-5" r="2.6"/>
+              <circle class="ln ac" cx="-7" cy="5" r="2.6"/>
+              <circle class="ln ac" cx="2" cy="0" r="2.6"/>
+              <circle class="nodefill" cx="9" cy="0" r="3"/>
+            </g>
           </g>
 
           <g class="particles" aria-hidden="true">
-            <circle class="particle" cx="156" cy="206" r="1.8" style="animation-delay:0s;animation-duration:8s"/>
-            <circle class="particle" cx="172" cy="210" r="1.5" style="animation-delay:2.5s;animation-duration:9s"/>
-            <circle class="particle" cx="186" cy="204" r="1.7" style="animation-delay:4s;animation-duration:7.5s"/>
-            <circle class="particle" cx="164" cy="212" r="1.4" style="animation-delay:5.5s;animation-duration:8.5s"/>
-            <circle class="particle" cx="180" cy="208" r="1.6" style="animation-delay:1.2s;animation-duration:9.5s"/>
+            <circle class="particle" cx="166" cy="222" r="1.7" style="animation-delay:0s;animation-duration:8s"/>
+            <circle class="particle" cx="182" cy="226" r="1.4" style="animation-delay:2.6s;animation-duration:9s"/>
+            <circle class="particle" cx="196" cy="220" r="1.6" style="animation-delay:4.2s;animation-duration:7.5s"/>
+            <circle class="particle" cx="174" cy="228" r="1.3" style="animation-delay:5.7s;animation-duration:8.6s"/>
+            <circle class="particle" cx="190" cy="224" r="1.5" style="animation-delay:1.3s;animation-duration:9.4s"/>
           </g>
         </svg>
       </figure>
