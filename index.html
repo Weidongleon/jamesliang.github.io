@@ -115,14 +115,26 @@
 
   /* Ventures */
   .ventures { list-style: none; padding: 0; margin: 0; }
-  .venture { display: grid; grid-template-columns: 64px 1fr auto; gap: 24px; padding: 34px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .venture { display: grid; grid-template-columns: 64px 1fr minmax(190px, auto); gap: 32px; padding: 34px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
   .venture:first-child { padding-top: 0; }
   .venture .n { font-family: Newsreader, serif; color: var(--faint); font-size: 18px; }
   .venture h3 { font-size: 27px; margin-bottom: 6px; }
   .venture p { margin: 0; color: var(--muted); max-width: 34em; }
-  .venture .meta { text-align: right; font-size: 13px; color: var(--muted); white-space: nowrap; }
-  .venture .meta b { display: block; font-weight: 400; color: var(--sage); }
+  .venture .meta { text-align: right; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: .02em; line-height: 1.5; }
+  .venture .meta b { display: block; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 18px; line-height: 1.25; letter-spacing: 0; color: var(--ink); margin-bottom: 4px; }
+  .venture .meta b:not(:first-of-type) { margin-top: 16px; }
   .fig { font-family: Newsreader, serif; color: var(--ink); }
+
+  /* Growth path figure */
+  .growth { margin: 4px 0 84px; }
+  .growth figure { margin: 0; }
+  #growth { display: block; width: 100%; height: auto; overflow: visible; }
+  #growth text { font-family: Inter, system-ui, sans-serif; letter-spacing: .01em; }
+  #growth text.g-title { font-family: Newsreader, Georgia, serif; }
+  #growth .g-node { opacity: 0; transform: translateY(7px); transition: opacity .9s ease, transform .9s ease; }
+  #growth.in .g-node { opacity: 1; transform: none; }
+  #growth .g-cur { transform-box: fill-box; transform-origin: center; animation: gpulse 2.6s ease-in-out infinite; }
+  @keyframes gpulse { 0%, 100% { opacity: .16; transform: scale(1); } 50% { opacity: .32; transform: scale(1.28); } }
 
   /* Products */
   .product { display: grid; grid-template-columns: 1fr; gap: 28px; margin-bottom: 96px; }
@@ -217,6 +229,8 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
     .enso circle { animation: none; stroke-dashoffset: 70; }
+    #growth .g-node { opacity: 1; transform: none; transition: none; }
+    #growth .g-cur { animation: none; }
     html { scroll-behavior: auto; }
   }
 </style>
@@ -288,6 +302,11 @@
 <section class="block" id="building">
   <div class="wrap">
     <div class="sec-head reveal"><h2>Building</h2><span class="label">Ventures & communities</span></div>
+    <div class="growth reveal">
+      <figure style="margin:0" aria-label="Growth path: from Mechanical Engineering (BEng, Birmingham, 2018) to Biomedical Engineering (PhD, King’s College London, 2021), through translational research and entrepreneurship, to AI and Software as a Medical Device as a postdoctoral researcher in 2026.">
+        <svg id="growth" role="img"></svg>
+      </figure>
+    </div>
     <ol class="ventures">
       <li class="venture reveal">
         <span class="n">01</span>
@@ -677,6 +696,80 @@
     }
     new IntersectionObserver(function (es) { vis = es[0].isIntersecting; if (vis && !run) { run = true; requestAnimationFrame(step); } }).observe(sv);
     if (reduce) requestAnimationFrame(step);
+  })();
+
+  /* ---------- Growth path: mechanical → biomedical → translational → AI SaMD ---------- */
+  (function () {
+    var sv = document.getElementById('growth'); if (!sv) return;
+    var stages = [
+      { t: 'Mechanical Engineering', s: 'BEng · Birmingham', y: '2018' },
+      { t: 'Biomedical Engineering', s: 'PhD · King’s College London', y: '2021' },
+      { t: 'Translational Research', s: 'Clinical translation · entrepreneurship', y: '2025' },
+      { t: 'AI · SaMD', s: 'Postdoctoral researcher', y: '2026' }
+    ];
+    function mk(n, a, parent) { var e = document.createElementNS(NS, n); for (var k in a) paint(e, k, a[k]); (parent || sv).appendChild(e); return e; }
+    var mode = null, shown = false, curProg = null;
+
+    function render() {
+      while (sv.firstChild) sv.firstChild.remove();
+      var horiz = sv.clientWidth >= 640; mode = horiz ? 'h' : 'v';
+      var W, H, pts = [], i;
+      if (horiz) {
+        W = 960; H = 250;
+        var xs = [122, 380, 626, 854], ys = [184, 140, 104, 60];
+        for (i = 0; i < 4; i++) pts.push({ x: xs[i], y: ys[i] });
+      } else {
+        W = 360; H = 556;
+        var yy = [66, 210, 354, 488];
+        for (i = 0; i < 4; i++) pts.push({ x: 58, y: yy[i] });
+      }
+      sv.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+      sv.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      var d = 'M ' + pts[0].x + ' ' + pts[0].y;
+      for (var k = 1; k < 4; k++) {
+        var a = pts[k - 1], b = pts[k];
+        if (horiz) { var mx = (a.x + b.x) / 2; d += ' C ' + mx + ' ' + a.y + ' ' + mx + ' ' + b.y + ' ' + b.x + ' ' + b.y; }
+        else { var my = (a.y + b.y) / 2; d += ' C ' + a.x + ' ' + my + ' ' + b.x + ' ' + my + ' ' + b.x + ' ' + b.y; }
+      }
+      mk('path', { d: d, fill: 'none', stroke: 'var(--line)', 'stroke-width': 1.5 });
+      var prog = mk('path', { d: d, fill: 'none', stroke: 'var(--sage)', 'stroke-width': 2, 'stroke-linecap': 'round' });
+      var L = prog.getTotalLength();
+      prog.style.strokeDasharray = L;
+      prog.style.strokeDashoffset = (reduce || shown) ? 0 : L;
+      prog.style.transition = reduce ? 'none' : 'stroke-dashoffset 1.9s cubic-bezier(.6,.05,.3,1)';
+      curProg = prog;
+      pts.forEach(function (p, idx) {
+        var last = idx === 3;
+        var g = mk('g', { class: 'g-node' });
+        if (!reduce) g.style.transitionDelay = (0.45 + idx * 0.42) + 's';
+        mk('circle', { cx: p.x, cy: p.y, r: last ? 13 : 10, fill: last ? 'var(--clay)' : 'var(--sage)', opacity: 0.16, class: last ? 'g-cur' : '' }, g);
+        mk('circle', { cx: p.x, cy: p.y, r: last ? 5.5 : 4.5, fill: last ? 'var(--clay)' : 'var(--sage)' }, g);
+        mk('circle', { cx: p.x, cy: p.y, r: last ? 2 : 1.6, fill: 'var(--paper)' }, g);
+        var tA, tx, yT, yS, yY;
+        if (horiz) { tA = idx === 0 ? 'start' : (last ? 'end' : 'middle'); tx = p.x; yT = p.y - 30; yS = p.y - 14; yY = p.y + 24; }
+        else { tA = 'start'; tx = p.x + 22; yT = p.y - 4; yS = p.y + 15; yY = p.y + 32; }
+        var e1 = mk('text', { x: tx, y: yT, 'text-anchor': tA, fill: 'var(--ink)', 'font-size': last ? 16 : 15, class: 'g-title' }, g); e1.textContent = stages[idx].t;
+        var e2 = mk('text', { x: tx, y: yS, 'text-anchor': tA, fill: 'var(--muted)', 'font-size': 11.5 }, g); e2.textContent = stages[idx].s;
+        var e3 = mk('text', { x: tx, y: yY, 'text-anchor': tA, fill: last ? 'var(--clay)' : 'var(--muted)', 'font-size': 12.5 }, g); e3.textContent = stages[idx].y;
+      });
+      if (!reduce) {
+        var glow = mk('circle', { r: 8, fill: 'var(--sage)', opacity: 0.18 });
+        var am2 = document.createElementNS(NS, 'animateMotion'); am2.setAttribute('dur', '3.8s'); am2.setAttribute('repeatCount', 'indefinite'); am2.setAttribute('path', d); am2.setAttribute('begin', '2s'); glow.appendChild(am2);
+        var pm = mk('circle', { r: 3.4, fill: 'var(--sage)', opacity: 0.9 });
+        var am = document.createElementNS(NS, 'animateMotion'); am.setAttribute('dur', '3.8s'); am.setAttribute('repeatCount', 'indefinite'); am.setAttribute('path', d); am.setAttribute('begin', '2s'); pm.appendChild(am);
+      }
+      if (shown) { sv.classList.add('in'); requestAnimationFrame(function () { prog.style.strokeDashoffset = '0'; }); }
+    }
+
+    function reveal() {
+      if (shown) return; shown = true; sv.classList.add('in');
+      if (curProg) requestAnimationFrame(function () { curProg.style.strokeDashoffset = '0'; });
+    }
+
+    render();
+    if (reduce) { shown = true; sv.classList.add('in'); }
+    new IntersectionObserver(function (es) { if (es[0].isIntersecting) reveal(); }, { rootMargin: '0px 0px -12% 0px' }).observe(sv);
+    var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { var m = sv.clientWidth >= 640 ? 'h' : 'v'; if (m !== mode) render(); }, 220); });
   })();
 
   /* ---------- CV gate: press-and-hold human check, then decrypt and download ---------- */
